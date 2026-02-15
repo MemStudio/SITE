@@ -4,7 +4,7 @@ from apps.app.forms import Register, SIGN
 from sqlite3 import connect
 from apps.config import Config
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import current_user, login_user, logout_user, LoginManager
+from flask_login import current_user, login_user, logout_user, LoginManager, login_required
 from flask_login import UserMixin
 from apps.app.Models import User
 
@@ -24,20 +24,19 @@ cursor.execute(f"UPDATE AU SET PASS = '{generate_password_hash('admin')}' WHERE 
 login_manager.init_app(app)
 @login_manager.user_loader
 def user_loader(user_id):
-    return User.id
+    return User(user_id)
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    cursor.execute('SELECT * FROM AU')
-    users = cursor.fetchall()
-    for i in users:
-        print(i[0])
     return render_template('index.html', title='index')
 
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
+    if current_user.is_authenticated:
+        match usrtypecheck():
+            case 'std' : return redirect('/stdmain')
     reg = Register()
     if reg.validate_on_submit():
         cursor.execute(f"SELECT USERS FROM AU WHERE USERS = '{reg.user}'")
@@ -52,6 +51,9 @@ def reg():
 
 @app.route('/in', methods=['GET', 'POST'])
 def sign():
+    if current_user.is_authenticated:
+        match usrtypecheck():
+            case 'std' : return redirect('/stdmain')
     sign = SIGN()
     if sign.validate_on_submit():
         cursor.execute(f"SELECT * FROM AU WHERE USERS = '{sign.user.data}'")
@@ -60,7 +62,8 @@ def sign():
             if check_password_hash(con[3],sign.password.data):
                 user = User(con[1])
                 login_user(user=user)
-                print()
+                print(flask_login.current_user)
+                print('SUCCES')
                 match con[4]:
                     case 'std' : return redirect('/stdmain')
             else: flash('Invalid username or password')
@@ -72,11 +75,11 @@ def sign():
     return render_template('AUTO.html', title='Register', form=sign)
 
 @app.route('/stdmain')
-@flask_login.login_required
+@login_required
 def stdmain():
     if usrtypecheck()!='std':
         return render_template('403.html')
-    return render_template('stdmain.html')
+    return render_template('stdmain.html', user=current_user.id)
 
 @app.route('/logout')
 def logout():
@@ -86,8 +89,16 @@ def logout():
 
 
 def usrtypecheck():
-    return cursor.execute(f"SELECT TYPE FROM AU WHERE USERS = '{flask_login.current_user}'")
+    print(current_user.id)
+    cursor.execute(f"SELECT TYPE FROM AU WHERE USERS = '{flask_login.current_user.id}'")
+    return cursor.fetchone()[0]
 
+@app.route('/stdmain/order')
+@login_required
+def order():
+    if usrtypecheck()!='std':
+        return render_template('403.html')
+    return 'test'
 
 
 
