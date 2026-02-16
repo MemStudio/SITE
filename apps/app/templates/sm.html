@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+{% if als %}
+    {%for al in als%}
+    <div><p>{{al[0]}}</p> <p>{{al[1]}}</p><p>{{al[2]}}</p><p>{{al[3]}}</p><p>{{al[4]}}</p><form action="" method="post" novalidate><input type="submit" name="{{al[0] + '/' + al[1] + '/' + al[2]}}" value="ВЫДАТЬ"></form></div>
+    {%endfor%}
+{% else %}
+    <p>Заказов нет</p>
+{% endif %}
+<form action="" method="post" novalidate><input type="submit" name="END" value="ЗАВЕРШИТЬ"></form>
+{% endblock %}

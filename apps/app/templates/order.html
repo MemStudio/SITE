@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Заказы</h1>
+        {% if ords %}
+            {%for ord in ords%}
+                <div><p>{{ord[1]}}</p> <p>{{ord[2]}}</p> <p>{{ord[3]}}</p> {% if ord[4]==1%} <p>Заказ выдан</p>  {% elif ord[4]==2%} <p>Заказ пропущен</p>  {% elif ord[5]==1%}  <p>Входит в абонемент</p> {% else %} <form action="" method="post" novalidate><input type="submit" name="{{ord[1]+'/' + ord[2]}}" value="Отменить заказ"></form> {% endif %} </div>
+            {%endfor%}
+        {% else %}
+            <p>Заказов Нет</p>
+        {% endif %}
+    <a href="/stdmain">Вернуться</a>
+{% endblock %}

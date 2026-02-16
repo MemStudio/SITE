@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>МЕНЮ</h1>
+        {% if ords %}
+            {%for ord in ords%}
+                <div><p>{{ord[0]}}</p> <p>{{ord[1]}}</p> <p>{{ord[2]}}</p><p>{{ord[3]}}</p><form action="" method="post" novalidate><input type="submit" name="{{ord[0]+'/' + ord[1]}}" value="Заказать"></form>  </div>
+            {%endfor%}
+        {% else %}
+            <p>МЕНЮ отсутствует</p>
+        {% endif %}
+    <a href="/stdmain">Вернуться</a>
+{% endblock %}

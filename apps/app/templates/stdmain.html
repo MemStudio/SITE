@@ -1,4 +1,34 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block content %}
-<div> 403 ERROR </div>
+<div><h1>{{FIO}}</h1></div>
+<div>
+    <p> Пользователь: {{user}}</p>
+    <p> Бюджет: {{count}}</p>
+    <p> Абонемент: {% if abon %} до {{abon}}{% else %} НЕТ {% endif %}</p>
+</div>
+<div>
+    <h2>Аллергии</h2>
+        {% if als %}
+            {%for al in als%}
+    <div><p>{{al}}</p> <form action="" method="post" novalidate><input type="submit" name="{{al}}" value="Удалить"></form></div>
+            {%endfor%}
+        {% else %}
+            <p>Аллергий нет</p>
+        {% endif %}
+
+</div>
+
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.aller.label }}<br>
+        {{ form.aller(size=32) }}<br>
+    </p>
+    <p>{{ form.submit()}}</p>
+</form>
+
+<a href="/order">Посмотреть заказы</a>
+<a href="/menu">Заказать</a>
+{% if abon %}{% else %}<a href="/ba">Заказать абонемент</a>{% endif %}
+<a href="/br">Пополнить кошелек</a>
 {% endblock %}

@@ -1,17 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизация</title>
-</head>
-<body>
-    {{ form.hidden_tag() }}
+{% extends "base.html" %}
+{% block content %}
+{% if als %}
+    {%for al in als%}
+    <div><p>{{al[0]}}</p> <p>{{al[1]}}</p> <form action="" method="post" novalidate><input type="submit" name="{{al[0]}}" value="Удалить"></form></div>
+    {%endfor%}
+{% else %}
+    <p>Поваров нет</p>
+{% endif %}
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
         {{ form.user.label }}<br>
         {{ form.user(size=32) }}<br>
         {% for error in form.user.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
+        <p>
+        {{ form.fio.label }}<br>
+        {{ form.fio(size=32) }}<br>
+        {% for error in form.fio.errors %}
             <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
         </p>
@@ -23,15 +31,6 @@
             {% endfor %}
         </p>
         <p>{{ form.submit()}}</p>
+
     </form>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-</body>
-</html>
+{% endblock %}

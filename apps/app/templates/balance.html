@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Пополнить кошелёк</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>{{ form.count(size=32) }}<br></p>
+    <p>{{ form.submit()}}</p>
+</form>
+<a href="/stdmain">Назад</a>
+{% endblock %}

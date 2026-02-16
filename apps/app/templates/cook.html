@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<a href = '/work'> Открыть смену</a>
+
+<a href="/menuop">Редактировать Меню</a>
+
+<div>
+    <h3>Ингредиенты</h3>
+    {%for al in als%}
+    <div><p>{{al[0]}}</p><p>{{al[1]}}</p><p>{{al[2]}}</p> <form action="" method="post" novalidate><input type="text" name="{{al[0]}}" value="Кол-во"><input type="submit" name="{{al[0]}}" value="Потрачено"></form></div>
+    {%endfor%}
+</div>
+<a href="/cook">Завершить</a>
+{% endblock %}

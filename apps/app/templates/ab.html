@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Купить абонемент (14 дней)</h1>
+<p>ВНИМАНИЕ: АБОНЕМЕНТ ОТМЕНИТЬ НЕЛЬЗЯ</p>
+<p>Стоимость: {{ abon }}</p>
+<form action="" method="post" novalidate><input type="submit" name = "order" value="Со следующего дня" ></form>
+<a href="/stdmain">Назад</a>
+{% endblock %}
